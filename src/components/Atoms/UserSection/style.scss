@@ -1,0 +1,39 @@
+@import "../../../styles/utils.scss";
+
+.userSection {
+  margin: 48px 0 34px 0;
+  .name {
+    p {
+      font-size: 30px;
+      font-weight: 600;
+    }
+  }
+  .filterTime {
+    display: flex;
+    border: 1px solid $border;
+    border-radius: 8px;
+    p {
+      border-right: 1px solid $border;
+      height: 100%;
+      padding: 10px 16px 10px 16px;
+      color: $gray_black;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    p:last-child {
+      border: none;
+      padding-right: 10px;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+    p:first-child {
+      padding-left: 10px;
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: 8px;
+    }
+    .activeTime {
+      background-color: $light_blue;
+      color: $text_blue;
+    }
+  }
+}

@@ -1,0 +1,14 @@
+@import "./utils.scss";
+@import "../../src/components/Atoms/Container/style.scss";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter";
+}
+
+.raw {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
