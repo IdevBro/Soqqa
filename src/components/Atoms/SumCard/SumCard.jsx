@@ -1,5 +1,7 @@
+import "./style.scss";
+
 const SumCard = () => {
-  return <div>SumCard</div>;
+  return <div className="sum_card">SumCard</div>;
 };
 
 export default SumCard;

@@ -1,0 +1,38 @@
+.marque {
+  display: flex;
+  // flex-wrap: nowrap;
+  gap: 32px;
+  // overflow-x: scroll;
+  // width: 100vw;
+  .marque_card {
+    padding: 22px 25px;
+    background-color: white;
+    border: 1px solid #eceff2;
+    width: 280px;
+    height: 130px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    position: relative;
+
+    .title {
+      font-size: 16px;
+    }
+    .price {
+      color: #3075ff;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    span {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      padding: 16px 28px;
+      background-color: #3075ff;
+      color: white;
+      border-top-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+  }
+}

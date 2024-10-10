@@ -1,6 +1,43 @@
 .header {
+  .scroll_container {
+    display: flex;
+    overflow-x: scroll;
+    flex-wrap: nowrap;
+    max-width: 100vw;
+    // transform: translateX();
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
   .fasterCardBox {
     display: flex;
     justify-content: space-between;
+  }
+  .marquee_box {
+    margin: 32px 0 60px 0;
+  }
+  .header_main {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 384px 800px;
+    column-gap: 32px;
+    margin-top: 60px;
+
+    .circle_chart {
+      border: 1px solid #eceff2;
+      border-radius: 12px;
+      padding: 20px;
+      .chart_title {
+        font-size: 16px;
+        font-weight: 500;
+      }
+      .chart {
+      }
+    }
+  }
+  .bottom_chart {
+    border: 1px solid #eceff2;
+    padding: 40px;
+    margin-top: 16px;
+    border-radius: 12px;
   }
 }

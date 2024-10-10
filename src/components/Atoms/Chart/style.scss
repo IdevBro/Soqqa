@@ -1,0 +1,25 @@
+.chart_box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.chart_info {
+  display: grid;
+  grid-template-columns: 32px auto;
+  padding: 8px 12px;
+  align-items: center;
+  column-gap: 8px;
+  border-bottom: 1px solid rgba(236, 239, 242, 1);
+
+  .chart_parcent {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    .parcent {
+      color: rgba(102, 128, 145, 1);
+    }
+  }
+  .color {
+  }
+}
