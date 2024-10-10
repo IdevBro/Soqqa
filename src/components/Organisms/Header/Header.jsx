@@ -4,7 +4,6 @@ import FasterCard from "../../Atoms/FasterCard/FasterCard";
 import Icons from "../../../Icons/Icons";
 import Container from "../../Atoms/Container/Container";
 import History from "../../Atoms/History/History";
-import SumCard from "../../Atoms/SumCard/SumCard";
 import Chart from "../../Atoms/Chart/Chart";
 import MyBarChart from "../../Atoms/MyBarChart/MyBarChart";
 import Marque from "../../Atoms/Marque/Marque";

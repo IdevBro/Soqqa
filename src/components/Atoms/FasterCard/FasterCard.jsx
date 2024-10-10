@@ -1,5 +1,4 @@
 import "./style.scss";
-import Icons from "../../../Icons/Icons";
 
 const FasterCard = ({ title, price, icon, type, procent }) => {
   return (
