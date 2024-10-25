@@ -1,11 +1,27 @@
 import React, { useState } from "react";
 import Select, { components } from "react-select";
-import { NumericFormat } from "react-number-format"; // NumberFormat o'rniga NumericFormat'dan foydalanamiz
+import { NumericFormat } from "react-number-format";
 import "./style.scss";
 import Icons from "../../../Icons/Icons";
 
+// NumericFormat komponentasini forwardRef bilan o'rash
+const ForwardedNumericFormat = React.forwardRef((props, ref) => (
+  <NumericFormat {...props} ref={ref} />
+));
+
+const ForwardedSelect = React.forwardRef((props, ref) => (
+  <Select {...props} ref={ref} />
+));
+
 const History = () => {
   const [numberValue, setNumberValue] = useState();
+  const [formData, setFormData] = useState({
+    name: "",
+    price: numberValue,
+    category: "",
+    account: localStorage.getItem("username"),
+  });
+
   const options = [
     { value: "Дом", label: "Дом" },
     { value: "Онлайн покупки", label: "Онлайн покупки" },
@@ -33,13 +49,11 @@ const History = () => {
     placeholder: (provided) => ({
       ...provided,
       color: "rgba(48, 117, 255, 0.75)",
-      fontSize: "14px", // Rangni o'zingiz xohlagan rangga o'zgartiring
+      fontSize: "14px",
     }),
-
     valueContainer: (provided) => ({
       ...provided,
     }),
-
     option: (provided, state) => ({
       ...provided,
       fontSize: 14,
@@ -60,30 +74,65 @@ const History = () => {
     }),
   };
 
+  const addHistory = (event) => {
+    event.preventDefault();
+    const updatedData = {
+      ...formData,
+      price: numberValue,
+    };
+
+    fetch("https://expense.uz/expense/add_expense", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: "mmm",
+        price: 100,
+        account: 33,
+        category: 3,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.text().then((text) => {
+            throw new Error(`Error ${res.status}: ${text}`);
+          });
+        }
+        return res.json();
+      })
+      .then((data) => console.log(data))
+      .catch((error) => console.error("Xatolik yuz berdi:", error));
+  };
+
   return (
     <div className="history">
       <h2>История расходов</h2>
       <div className="create_history">
-        <form>
+        <form className="form" onSubmit={addHistory}>
           <input
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            value={formData.name}
             className="history_name"
             type="text"
             placeholder="Введите название расхода/дохода..."
           />
-          <Select
+          <ForwardedSelect
+            onChange={(selectedOption) =>
+              setFormData({ ...formData, category: selectedOption.value })
+            }
+            value={options.find((opt) => opt.value === formData.category)}
             placeholder={"Категория"}
             options={options}
             styles={customStyles}
             components={{ DropdownIndicator, IndicatorSeparator: () => null }}
           />
-          <NumericFormat
-            value={numberValue}
+          <ForwardedNumericFormat
             onValueChange={(values) => setNumberValue(values.value)}
+            value={numberValue}
             thousandSeparator="."
             decimalSeparator=","
             placeholder="Raqam kiriting"
           />
-          <button>+</button>
+          <button type="submit">+</button>
         </form>
         <div className="table">
           <div className="title">
