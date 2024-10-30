@@ -1,0 +1,15 @@
+.product {
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 150px 150px 150px;
+    padding: 8px 24px;
+    font-size: 14px;
+    .product_icons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 20px;
+      svg {
+        cursor: pointer;
+      }
+    }
+  }

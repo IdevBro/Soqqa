@@ -40,6 +40,7 @@ const Header = () => {
           <FasterCard
             title={"Доход"}
             price={"8.499.000 сум"}
+            // eslint-disable-next-line react/jsx-pascal-case
             icon={<Icons.arrow_top />}
             procent={"27%"}
             type={"daxod"}
@@ -47,6 +48,7 @@ const Header = () => {
           <FasterCard
             title={"Расход"}
             price={"6.499.000 сум"}
+            // eslint-disable-next-line react/jsx-pascal-case
             icon={<Icons.arrow_bottom />}
             procent={"-15%"}
             type={"rasxod"}

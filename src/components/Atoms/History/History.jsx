@@ -1,8 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Select, { components } from "react-select";
 import { NumericFormat } from "react-number-format";
 import "./style.scss";
 import Icons from "../../../Icons/Icons";
+import { useHttps } from "../../../hooks/useHttps";
+import InfoHistory from "./InfoHistory";
 
 // NumericFormat komponentasini forwardRef bilan o'rash
 const ForwardedNumericFormat = React.forwardRef((props, ref) => (
@@ -14,26 +16,27 @@ const ForwardedSelect = React.forwardRef((props, ref) => (
 ));
 
 const History = () => {
-  const nameRef = useRef();
-  const priceRef = useRef();
-  const accountRef = useRef();
-  const categoryIdRef = useRef();
+  const { data, loading, error, request } = useHttps();
 
   const [numberValue, setNumberValue] = useState();
   const [formData, setFormData] = useState({
-    name: nameRef,
-    price: numberValue,
-    category: 18,
-    // account: localStorage.getItem("username"),
-    account: 2,
+    name: "",
+    price: 0,
+    category: 0,
+    account: null,
   });
 
-  const options = [
-    { value: "Дом", label: "Дом" },
-    { value: "Онлайн покупки", label: "Онлайн покупки" },
-    { value: "Автомобиль", label: "Автомобиль" },
-    { value: "Еда", label: "Еда" },
-  ];
+  const options = Array.isArray(data) ? data.map((item) => ({ value: item.id, label: item.title })) : [];
+
+  useEffect(() => {
+    request({
+      url: "expense/all_categories/",
+      method: "GET",
+      body: null,
+      token: true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const DropdownIndicator = (props) => {
     return (
@@ -82,32 +85,46 @@ const History = () => {
 
   const addHistory = (event) => {
     event.preventDefault();
+
+    // Form maydonlarini tekshirish
+    if (!formData.name || !formData.category || !numberValue) {
+      alert("Barcha maydonlar to'ldirilishi shart!");
+      return;
+    }
+
     const updatedData = {
       ...formData,
-      price: numberValue,
+      price: Number(numberValue),
+      account: Number(localStorage.getItem("id")),
     };
 
-    fetch("https://expense.uz/expense/add_expense", {
+    request({
+      url: "expense/add_expense/",
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: "mmm",
-        price: 100,
-        account: 33,
-        category: 3,
-      }),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          return res.text().then((text) => {
-            throw new Error(`Error ${res.status}: ${text}`);
-          });
-        }
-        return res.json();
-      })
-      .then((data) => console.log(data))
-      .catch((error) => console.error("Xatolik yuz berdi:", error));
+      body: updatedData,
+    });
+    request({
+      url: "expense/all_categories/",
+      method: "GET",
+     
+      token: true,
+    });
+    setFormData({
+      name: "",
+      price: 0,
+      category: 0,
+      account: null,
+    });
+    setNumberValue(0);
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="history">
@@ -120,7 +137,7 @@ const History = () => {
             className="history_name"
             type="text"
             placeholder="Введите название расхода/дохода..."
-            ref={nameRef}
+            required
           />
           <ForwardedSelect
             onChange={(selectedOption) =>
@@ -131,6 +148,7 @@ const History = () => {
             options={options}
             styles={customStyles}
             components={{ DropdownIndicator, IndicatorSeparator: () => null }}
+            required
           />
           <ForwardedNumericFormat
             onValueChange={(values) => setNumberValue(values.value)}
@@ -138,6 +156,7 @@ const History = () => {
             thousandSeparator="."
             decimalSeparator=","
             placeholder="Raqam kiriting"
+            required
           />
           <button type="submit">+</button>
         </form>
@@ -147,15 +166,7 @@ const History = () => {
             <p>Дата</p>
             <p>Цена</p>
           </div>
-          <div className="product">
-            <p>Мохито</p>
-            <p>2024/03/21</p>
-            <p>-50.000 сум</p>
-            <div className="product_icons">
-              <div className="edit">{<Icons.edit />}</div>
-              <div className="delete">{<Icons.remove />}</div>
-            </div>
-          </div>
+         <InfoHistory />
         </div>
       </div>
     </div>
