@@ -21,25 +21,6 @@ function Chart() {
     { name: "Transport", value: 120 },
     { name: "Boshqa", value: 80 },
   ];
-  const addRef = useRef();
-  const API = "https://expense.uz/expense/add_category/";
-  const [category, setCategory] = useState();
-
-  const addCategory = () => {
-    let titles = addRef.current.value;
-    const categoryData = {
-      title: titles,
-      account: 2,
-    };
-    fetch(API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(categoryData),
-    })
-      .then((res) => res.json())
-      .then((data) => setCategory(data));
-    console.log(category);
-  };
 
   const totalValue = data.reduce((acc, entry) => acc + entry.value, 0);
   return (
@@ -87,9 +68,6 @@ function Chart() {
             </div>
           );
         })}
-
-        <input ref={addRef} type="text" />
-        <button onClick={addCategory}>Add</button>
       </div>
     </div>
   );
