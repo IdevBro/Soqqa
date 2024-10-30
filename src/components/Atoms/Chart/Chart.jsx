@@ -1,14 +1,8 @@
 import React from "react";
 import { PieChart, Pie, Cell } from "recharts";
+import { useRef, useState } from "react";
 import "./style.scss";
-const data = [
-  { name: "Дом", value: 100 },
-  { name: "Онлайн покупки ", value: 300 },
-  { name: "Автомобиль", value: 364 },
-  { name: "Еда", value: 200 },
-  { name: "Transport", value: 120 },
-  { name: "Boshqa", value: 80 },
-];
+
 const COLORS = [
   "#9E77ED",
   "#F04438",
@@ -19,6 +13,34 @@ const COLORS = [
 ];
 
 function Chart() {
+  const data = [
+    { name: "Дом", value: 100 },
+    { name: "Онлайн покупки ", value: 300 },
+    { name: "Автомобиль", value: 364 },
+    { name: "Еда", value: 200 },
+    { name: "Transport", value: 120 },
+    { name: "Boshqa", value: 80 },
+  ];
+  const addRef = useRef();
+  const API = "https://expense.uz/expense/add_category/";
+  const [category, setCategory] = useState();
+
+  const addCategory = () => {
+    let titles = addRef.current.value;
+    const categoryData = {
+      title: titles,
+      account: 2,
+    };
+    fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(categoryData),
+    })
+      .then((res) => res.json())
+      .then((data) => setCategory(data));
+    console.log(category);
+  };
+
   const totalValue = data.reduce((acc, entry) => acc + entry.value, 0);
   return (
     <div>
@@ -65,6 +87,9 @@ function Chart() {
             </div>
           );
         })}
+
+        <input ref={addRef} type="text" />
+        <button onClick={addCategory}>Add</button>
       </div>
     </div>
   );

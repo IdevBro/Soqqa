@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Select, { components } from "react-select";
 import { NumericFormat } from "react-number-format";
 import "./style.scss";
@@ -14,12 +14,18 @@ const ForwardedSelect = React.forwardRef((props, ref) => (
 ));
 
 const History = () => {
+  const nameRef = useRef();
+  const priceRef = useRef();
+  const accountRef = useRef();
+  const categoryIdRef = useRef();
+
   const [numberValue, setNumberValue] = useState();
   const [formData, setFormData] = useState({
-    name: "",
+    name: nameRef,
     price: numberValue,
-    category: "",
-    account: localStorage.getItem("username"),
+    category: 18,
+    // account: localStorage.getItem("username"),
+    account: 2,
   });
 
   const options = [
@@ -114,6 +120,7 @@ const History = () => {
             className="history_name"
             type="text"
             placeholder="Введите название расхода/дохода..."
+            ref={nameRef}
           />
           <ForwardedSelect
             onChange={(selectedOption) =>
