@@ -32,17 +32,6 @@ const Header = () => {
           <UserSection />
         </div>
         <div className="fasterCardBox">
-          {/* {[1, 2, 3].map((item, index) => {
-            return (
-              <div key={item.id}>
-                <FasterCard
-                  title={"Баланс"}
-                  price={"2.000.000 сум"}
-                  type={"balans"}
-                />
-              </div>
-            );
-          })} */}
           <FasterCard
             title={"Баланс"}
             price={"2.000.000 сум"}

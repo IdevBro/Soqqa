@@ -16,12 +16,12 @@ export const useHttps = () => {
 
     const data = await response.json();
     if (response.ok) {
-      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("access", data.accessToken);
       return data.accessToken;
     } else {
-      localStorage.removeItem("accessToken"); // Tokenlarni o'chirish
-      localStorage.removeItem("refreshToken");
-      window.location.href = "/"; // Login sahifasiga yo'naltirish
+      localStorage.removeItem("access"); // Tokenlarni o'chirish
+      localStorage.removeItem("refresh");
+      window.location.href = "/login"; // Login sahifasiga yo'naltirish
       throw new Error("Session expired, please login again");
     }
   };
@@ -31,19 +31,17 @@ export const useHttps = () => {
     method = "GET",
     body = null,
     token = false,
+    headers = { "Content-Type": "application/json" }
   }) => {
     setLoading(true);
-    const headers = { "Content-Type": "application/json" };
-    if (token) {
-      headers["Authorization"] = `Bearer ${localStorage.getItem(
-        "accessToken"
-      )}`;
-    }
+    if (token)  headers["Authorization"] = `Bearer ${localStorage.getItem("access" )}`;
+    if (method === "GET" || method === "HEAD") body = null;
+    
 
     try {
       const response = await fetch(Baseurl + url, {
         method,
-        body: JSON.stringify(body),
+        body: body ? JSON.stringify(body) : null,
         headers,
       });
       if (!response.ok) {
@@ -53,10 +51,11 @@ export const useHttps = () => {
         }
         throw new Error(`Could not fetch ${url}, status: ${response.status}`);
       }
-      setLoading(false);
       const result = await response.json();
+      setLoading(false);
       setData(result);
     } catch (e) {
+      console.log("global error: ", e);
       setLoading(false);
       setError(e.message);
     }
