@@ -4,7 +4,11 @@ const { REACT_APP_BASE_URL: Baseurl } = process.env;
 export const useHttps = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
+  const [getData, setGetData] = useState(null); // GET uchun
+  const [postData, setPostData] = useState(null); // POST uchun
+  const [putData, setPutData] = useState(null); // PUT uchun
+  const [deleteData, setDeleteData] = useState(null); // DELETE uchun
+  const [data, setData] = useState(null); // DELETE uchun
 
   const refreshToken = async () => {
     const refresh = localStorage.getItem("refresh");
@@ -31,12 +35,12 @@ export const useHttps = () => {
     method = "GET",
     body = null,
     token = false,
-    headers = { "Content-Type": "application/json" }
+    headers = { "Content-Type": "application/json" },
   }) => {
     setLoading(true);
-    if (token)  headers["Authorization"] = `Bearer ${localStorage.getItem("access" )}`;
+    if (token)
+      headers["Authorization"] = `Bearer ${localStorage.getItem("access")}`;
     if (method === "GET" || method === "HEAD") body = null;
-    
 
     try {
       const response = await fetch(Baseurl + url, {
@@ -51,7 +55,31 @@ export const useHttps = () => {
         }
         throw new Error(`Could not fetch ${url}, status: ${response.status}`);
       }
+      if (
+        response.status === 204 ||
+        response.status === 205 ||
+        response.headers.get("content-length") === "0"
+      ) {
+        return null; // Hech qanday kontent qaytmagan
+      }
       const result = await response.json();
+      setLoading(false);
+      switch (method) {
+        case "GET":
+          setGetData(result);
+          break;
+        case "POST":
+          setPostData(result);
+          break;
+        case "PUT":
+          setPutData(result);
+          break;
+        case "DELETE":
+          setDeleteData(result);
+          break;
+        default:
+          setData(result); // Agar boshqa metodlar bo'lsa
+      }
       setLoading(false);
       setData(result);
     } catch (e) {
@@ -61,5 +89,5 @@ export const useHttps = () => {
     }
   };
 
-  return { loading, data, error, request };
+  return { data, putData, postData, deleteData, loading, getData, error, request };
 };

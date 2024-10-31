@@ -18,11 +18,22 @@ function InfoHistory() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  console.log(data);
-
+  const handleDelete = (id) => {
+    console.log("delete", typeof id);
+    request({
+      url: `expense/delete_expense/${id}/`,
+      method: "DELETE", 
+      body: { id },
+    });
+    request({
+      url: "expense/list_expense/",
+      method: "GET",
+      token: true,
+    });
+  };
   return (
     <>
-      {data.map((item) => {
+      {data?.map((item) => {
         const serverDate = "2024-10-30T09:03:16.621321Z";
 
         // Stringni Date obyektiga aylantirish
@@ -36,13 +47,15 @@ function InfoHistory() {
         const year = date.getFullYear();
         const fullDate = `${day}/${month}/${year} | ${hours}:${minutes}`;
         return (
-          <div className="product">
+          <div key={item.id} className="product">
             <p>{item.name}</p>
             <p>{fullDate}</p>
             <p>{item.price} сум</p>
             <div className="product_icons">
               <div className="edit">{<Icons.edit />}</div>
-              <div className="delete">{<Icons.remove />}</div>
+              <div onClick={() => handleDelete(item.id)} className="delete">
+                {<Icons.remove />}
+              </div>
             </div>
           </div>
         );
