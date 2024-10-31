@@ -89,5 +89,14 @@ export const useHttps = () => {
     }
   };
 
-  return { data, putData, postData, deleteData, loading, getData, error, request };
+  return {
+    data,
+    putData,
+    postData,
+    deleteData,
+    loading,
+    getData,
+    error,
+    request,
+  };
 };

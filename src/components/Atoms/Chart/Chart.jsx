@@ -14,7 +14,7 @@ const getRandomColor = () => {
 
 function Chart() {
   const addRef = useRef(null);
-  const [data, ] = useState([
+  const [data] = useState([
     { name: "Дом", value: 100, color: "#9E77ED" },
     { name: "Онлайн покупки", value: 300, color: "#F04438" },
     { name: "Автомобиль", value: 364, color: "#0BA5EC" },
@@ -25,20 +25,21 @@ function Chart() {
 
   const totalValue = data.reduce((acc, entry) => acc + entry.value, 0);
 
-  const { data: info, error, request, loading } = useHttps();
+  const { postData: info, error, request, loading } = useHttps();
 
-
-
-
-
-  if(loading) return <p>Loading...</p>
-  if(error) return <p>Error: {error}</p>
-  
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   const addCategory = () => {
     if (addRef.current.value) {
-      
-      request({url: `expense/add_category/`, method:"POST", body: {title: addRef.current.value, account:localStorage.getItem("id")}}) 
+      request({
+        url: `expense/add_category/`,
+        method: "POST",
+        body: {
+          title: addRef.current.value,
+          account: localStorage.getItem("id"),
+        },
+      });
       addRef.current.value = ""; // Inputni tozalash
     }
   };
