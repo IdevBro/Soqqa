@@ -1,10 +1,10 @@
 import "./infoHistory.scss";
 import Icons from "../../../Icons/Icons";
 import { useHttps } from "../../../hooks/useHttps";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function InfoHistory() {
-  const { data, loading, error, request } = useHttps();
+  const { getData, loading, error, request } = useHttps();
 
   useEffect(() => {
     request({
@@ -19,10 +19,9 @@ function InfoHistory() {
   if (error) return <div>Error: {error}</div>;
 
   const handleDelete = (id) => {
-    console.log("delete", typeof id);
     request({
       url: `expense/delete_expense/${id}/`,
-      method: "DELETE", 
+      method: "DELETE",
       body: { id },
     });
     request({
@@ -31,9 +30,10 @@ function InfoHistory() {
       token: true,
     });
   };
+
   return (
     <>
-      {data?.map((item) => {
+      {getData?.map((item) => {
         const serverDate = "2024-10-30T09:03:16.621321Z";
 
         // Stringni Date obyektiga aylantirish

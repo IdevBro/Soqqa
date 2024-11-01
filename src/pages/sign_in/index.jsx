@@ -31,6 +31,7 @@ const SignIn = () => {
         localStorage.setItem("access", data?.data?.tokens?.access);
         localStorage.setItem("refresh", data?.data?.tokens?.refresh);
         localStorage.setItem("username", data?.data?.username);
+        localStorage.setItem("id", data?.data?.id);
         navigate("/home");
       })
       .catch((error) => {

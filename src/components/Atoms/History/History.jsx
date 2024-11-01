@@ -26,7 +26,9 @@ const History = () => {
     account: null,
   });
 
-  const options = Array.isArray(data) ? data.map((item) => ({ value: item.id, label: item.title })) : [];
+  const options = Array.isArray(data)
+    ? data.map((item) => ({ value: item.id, label: item.title }))
+    : [];
 
   useEffect(() => {
     request({
@@ -106,7 +108,7 @@ const History = () => {
     request({
       url: "expense/all_categories/",
       method: "GET",
-     
+
       token: true,
     });
     setFormData({
@@ -155,7 +157,7 @@ const History = () => {
             value={numberValue}
             thousandSeparator="."
             decimalSeparator=","
-            placeholder="Raqam kiriting"
+            placeholder="Summani kiriting"
             required
           />
           <button type="submit">+</button>
@@ -166,7 +168,7 @@ const History = () => {
             <p>Дата</p>
             <p>Цена</p>
           </div>
-         <InfoHistory />
+          <InfoHistory />
         </div>
       </div>
     </div>

@@ -1,10 +1,8 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { PieChart, Pie, Cell } from "recharts";
-import { useRef, useState } from "react";
 import "./style.scss";
 import { useHttps } from "../../../hooks/useHttps";
 
-// Tasodifiy ranglarni yaratish uchun funksiya
 const getRandomColor = () => {
   const r = Math.floor(Math.random() * 256);
   const g = Math.floor(Math.random() * 256);
@@ -14,34 +12,49 @@ const getRandomColor = () => {
 
 function Chart() {
   const addRef = useRef(null);
-  const [data, ] = useState([
-    { name: "Дом", value: 100, color: "#9E77ED" },
-    { name: "Онлайн покупки", value: 300, color: "#F04438" },
-    { name: "Автомобиль", value: 364, color: "#0BA5EC" },
-    { name: "Еда", value: 200, color: "#17B26A" },
-    { name: "Transport", value: 120, color: "#4E5BA6" },
-    { name: "Boshqa", value: 80, color: "#ECEFF2" },
-  ]);
+
+  const [data, setData] = useState([]);
+
+  const { postData: info, getData, error, request, loading } = useHttps();
+
+  useEffect(() => {
+    request({
+      url: "expense/list_category/",
+      method: "GET",
+      body: null,
+      token: true,
+    });
+  }, []);
+
+  useEffect(() => {
+    if (getData) {
+      const processedData = Object.entries(getData).map(([name, value]) => ({
+        name,
+        value: parseFloat(value), // String qiymatni foiz sifatida floatga aylantirish
+        color: getRandomColor(),
+      }));
+      setData(processedData);
+    }
+  }, [getData]);
 
   const totalValue = data.reduce((acc, entry) => acc + entry.value, 0);
 
-  const { data: info, error, request, loading } = useHttps();
-
-
-
-
-
-  if(loading) return <p>Loading...</p>
-  if(error) return <p>Error: {error}</p>
-  
-
-  const addCategory = () => {
+  const handleAddCategory = () => {
     if (addRef.current.value) {
-      
-      request({url: `expense/add_category/`, method:"POST", body: {title: addRef.current.value, account:localStorage.getItem("id")}}) 
+      request({
+        url: `expense/add_category/`,
+        method: "POST",
+        body: {
+          title: addRef.current.value,
+          account: localStorage.getItem("id"),
+        },
+      });
       addRef.current.value = ""; // Inputni tozalash
     }
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
@@ -58,10 +71,7 @@ function Chart() {
             dataKey="value"
           >
             {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={entry.color} // Endi ranglar dinamik ravishda tanlanadi
-              />
+              <Cell key={`cell-${index}`} fill={entry.color} />
             ))}
           </Pie>
         </PieChart>
@@ -69,13 +79,13 @@ function Chart() {
 
       <div className="info_chart">
         {data.map((entry, index) => {
-          const percentage = ((entry.value / totalValue) * 100).toFixed(2); // Foizni hisoblash
+          const percentage = ((entry.value / totalValue) * 100).toFixed(2);
           return (
             <div className="chart_info" key={index}>
               <div
                 className="color"
                 style={{
-                  backgroundColor: entry.color, // Dinamik rang
+                  backgroundColor: entry.color,
                   width: "32px",
                   height: "32px",
                   borderRadius: "50%",
@@ -90,7 +100,7 @@ function Chart() {
         })}
       </div>
       <input ref={addRef} type="text" placeholder="Add new category" />
-      <button onClick={addCategory}>Add Category</button>
+      <button onClick={handleAddCategory}>Add Category</button>
     </div>
   );
 }
