@@ -60,6 +60,7 @@ export const useHttps = () => {
         response.status === 205 ||
         response.headers.get("content-length") === "0"
       ) {
+        setDeleteData(true);
         return null; // Hech qanday kontent qaytmagan
       }
       const result = await response.json();

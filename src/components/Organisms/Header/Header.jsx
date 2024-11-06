@@ -1,15 +1,20 @@
 import "./style.scss";
 import UserSection from "../../Atoms/UserSection/UserSection";
-import FasterCard from "../../Atoms/FasterCard/FasterCard";
 import Icons from "../../../Icons/Icons";
 import Container from "../../Atoms/Container/Container";
 import History from "../../Atoms/History/History";
 import Chart from "../../Atoms/Chart/Chart";
 import MyBarChart from "../../Atoms/MyBarChart/MyBarChart";
 import Marque from "../../Atoms/Marque/Marque";
+import Balance from "../../Balance";
+import Income from "../../Income";
+import Spending from "../../Spending";
 import { useEffect, useState } from "react";
+import { useHttps } from "../../../hooks/useHttps";
 const Header = () => {
+  const { getData, error, request, loading } = useHttps();
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth); // Kenglikni yangilang
@@ -32,27 +37,9 @@ const Header = () => {
           <UserSection />
         </div>
         <div className="fasterCardBox">
-          <FasterCard
-            title={"Баланс"}
-            price={"2.000.000 сум"}
-            type={"balans"}
-          />
-          <FasterCard
-            title={"Доход"}
-            price={"8.499.000 сум"}
-            // eslint-disable-next-line react/jsx-pascal-case
-            icon={<Icons.arrow_top />}
-            procent={"27%"}
-            type={"daxod"}
-          />
-          <FasterCard
-            title={"Расход"}
-            price={"6.499.000 сум"}
-            // eslint-disable-next-line react/jsx-pascal-case
-            icon={<Icons.arrow_bottom />}
-            procent={"-15%"}
-            type={"rasxod"}
-          />
+          <Balance />
+          <Income />
+          <Spending />
         </div>
       </Container>
       <Container
