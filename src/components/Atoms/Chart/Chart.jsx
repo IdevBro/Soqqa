@@ -30,7 +30,7 @@ function Chart() {
     if (getData) {
       const processedData = Object.entries(getData).map(([name, value]) => ({
         name,
-        value: parseFloat(value), // String qiymatni foiz sifatida floatga aylantirish
+        value: parseFloat(value),
         color: getRandomColor(),
       }));
       setData(processedData);
@@ -49,7 +49,7 @@ function Chart() {
           account: localStorage.getItem("id"),
         },
       });
-      addRef.current.value = ""; // Inputni tozalash
+      addRef.current.value = "";
     }
   };
 
