@@ -33,33 +33,34 @@ function InfoHistory() {
 
   return (
     <>
-      {getData?.map((item) => {
-        const serverDate = "2024-10-30T09:03:16.621321Z";
+      {Array.isArray(getData) &&
+        getData?.map((item) => {
+          const serverDate = "2024-10-30T09:03:16.621321Z";
 
-        // Stringni Date obyektiga aylantirish
-        const date = new Date(serverDate);
+          // Stringni Date obyektiga aylantirish
+          const date = new Date(serverDate);
 
-        // Soat, daqiqa, kun, oy va yilni olish
-        const hours = date.getHours().toString().padStart(2, "0");
-        const minutes = date.getMinutes().toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
-        const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Oylik indeks 0dan boshlanadi
-        const year = date.getFullYear();
-        const fullDate = `${day}/${month}/${year} | ${hours}:${minutes}`;
-        return (
-          <div key={item.id} className="product">
-            <p>{item.name}</p>
-            <p>{fullDate}</p>
-            <p>{item.price} сум</p>
-            <div className="product_icons">
-              <div className="edit">{<Icons.edit />}</div>
-              <div onClick={() => handleDelete(item.id)} className="delete">
-                {<Icons.remove />}
+          // Soat, daqiqa, kun, oy va yilni olish
+          const hours = date.getHours().toString().padStart(2, "0");
+          const minutes = date.getMinutes().toString().padStart(2, "0");
+          const day = date.getDate().toString().padStart(2, "0");
+          const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Oylik indeks 0dan boshlanadi
+          const year = date.getFullYear();
+          const fullDate = `${day}/${month}/${year} | ${hours}:${minutes}`;
+          return (
+            <div key={item.id} className="product">
+              <p>{item.name}</p>
+              <p>{fullDate}</p>
+              <p>{item.price} сум</p>
+              <div className="product_icons">
+                <div className="edit">{<Icons.edit />}</div>
+                <div onClick={() => handleDelete(item.id)} className="delete">
+                  {<Icons.remove />}
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
     </>
   );
 }
