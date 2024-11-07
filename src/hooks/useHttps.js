@@ -179,6 +179,7 @@ export const useHttps = () => {
 
       // Javobni JSON formatda olish
       const contentType = response.headers.get("Content-Type");
+      console.log(contentType, " contenttypebu");
       if (contentType && contentType.includes("application/json")) {
         const result = await response.json();
         setLoading(false);
