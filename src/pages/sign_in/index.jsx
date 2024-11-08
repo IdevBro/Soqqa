@@ -15,7 +15,7 @@ const SignIn = () => {
     };
 
     // Foydalanuvchini autentifikatsiya qilish
-    fetch("https://expense.uz/account/login/", {
+    fetch("https://api.expense.uz/account/login/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
